@@ -8,7 +8,7 @@ class Simulator(object):
     def __init__(self,
                  dep_filename,
                  prof_filenames,
-                 bandwidth=200,
+                 bandwidth=5,
                  device_names=None,
                  priority_filename=None,
                  part_filename=None,
@@ -18,6 +18,7 @@ class Simulator(object):
 
         self.ignore_latency = ignore_latency
         self.results = []
+        self.total_data_sent = 0
 
         self.current_device = 0  # spin
         self.device_names = []  # spinning through all devices
@@ -136,6 +137,7 @@ class Simulator(object):
                 dep_layer = self.layers[dep]
                 transfer_latency = 0
                 if (not self.ignore_latency) and str(dep_layer.device_id) != device.name:
+                    self.total_data_sent += dep_layer.size
                     transfer_latency = dep_layer.size / self.bandwidth * 1000
                 print(f"Receiving layer {dep} data from device {dep_layer.device_id}, "
                       f"starting at {dep_layer.end_time:.4f}, latency {transfer_latency}.")
@@ -195,4 +197,4 @@ class Simulator(object):
         print("{:<15} {:<15} {:<15}".format("device", "macs sum (M)", "macs peak (M)"))
         for name, device in self.devices.items():
             device.get_macs()
-        # print(self.results)
+        print(f"\n\033[30;42m========={self.total_data_sent}MB data sent=========\033[0m")
