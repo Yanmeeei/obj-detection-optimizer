@@ -44,7 +44,9 @@ Optimizer(
 * Whether to ignore transfer latency. Mainly for testing. 
 
 ## 3. Use Optimizer Wrapper
-Please use `opt_wrapper.py` when optimizing the network. You may modify the following part as needed. 
+Please use `opt_wrapper.py` when optimizing the network. Make a copy of the prof and dep files to the root directory. 
+
+You may modify the following part as needed. 
 ```python
 bandwidth = 400
 ignore_latency = False
